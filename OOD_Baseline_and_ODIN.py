@@ -55,6 +55,10 @@ def main():
         model = models.ResNet34(num_c=args.num_classes)
         model.load_state_dict(torch.load(pre_trained_net, map_location = "cuda:" + str(args.gpu)))
         in_transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
+    elif args.net_type == 'vgg16':
+        model = models.VGG16(int(args.num_classes))
+        model.load_state_dict(torch.load(pre_trained_net, map_location = "cuda:" + str(args.gpu)))
+        in_transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),])
     model.cuda()
     print('load model: ' + args.net_type)
     

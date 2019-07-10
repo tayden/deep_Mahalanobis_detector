@@ -21,7 +21,7 @@ parser.add_argument('--dataset', required=True, help='cifar10 | cifar100 | svhn'
 parser.add_argument('--dataroot', default='./data', help='path to dataset')
 parser.add_argument('--outf', default='./output/', help='folder to output results')
 parser.add_argument('--num_classes', type=int, default=10, help='the # of classes')
-parser.add_argument('--net_type', required=True, help='resnet | densenet')
+parser.add_argument('--net_type', required=True, help='resnet | densenet | vgg16')
 parser.add_argument('--gpu', type=int, default=0, help='gpu index')
 args = parser.parse_args()
 print(args)
@@ -54,6 +54,10 @@ def main():
         model = models.ResNet34(num_c=args.num_classes)
         model.load_state_dict(torch.load(pre_trained_net, map_location = "cuda:" + str(args.gpu)))
         in_transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),])
+    elif args.net_type == 'vgg16':
+        model = models.VGG16(int(args.num_classes))
+        model.load_state_dict(torch.load(pre_trained_net, map_location = "cuda:" + str(args.gpu)))
+        in_transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),])
     model.cuda()
     print('load model: ' + args.net_type)
     
